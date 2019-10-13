@@ -1,0 +1,25 @@
+$primary-orange:#fffae1;
+$secondary-orange:#ffee8a;
+$tertiary-orange:#ffb46c;
+$quaternary-orange:#ff832c;
+$font-family:'Avenir', Helvetica, Arial, sans-serif;
+@mixin fonts($size,$color,$line-height:1.2,$weight:normal,$align:center){
+  font-size: $size;
+  color: $color;
+  line-height :$line-height;
+  font-weight: $weight;
+  text-align: $align;
+}
+@mixin button($width:null,$height:null,$border-radius:null,$background-color:null){
+  width: $width;
+  height: $height;
+  background-color: $background-color;
+  border-radius: $border-radius;
+}
+@mixin div($width:null,$height:null,$background-color:null,$float:null,$overflow:null){
+  width: $width;
+  height: $height;
+  background-color: $background-color;
+  float: $float;
+  overflow: $overflow;
+}
