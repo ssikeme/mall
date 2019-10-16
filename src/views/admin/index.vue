@@ -12,12 +12,15 @@
         <label>
           <input class="adminInput" type="text" placeholder="用户名" v-model="username">
           <p v-show="usernameHint">请输入6-16个由数字，字母或下划线组成的用户名</p>
+          <p v-if="usernameExistedHint">该用户名已存在</p>
+          <p v-if="usernameNotExistHint">该用户名不存在</p>
         </label>
       </div>
       <div class="inputDiv">
         <label>
           <input type="password" class="adminInput" placeholder="请输入密码" v-model="passWd">
           <p v-show="passWdHint">请输入8-18个由ascii码组成的密码，不含空格</p>
+          <p v-if="incorrectParamHint">您输入的用户名或密码错误!</p>
         </label>
       </div>
       <div class="inputDiv" v-if="isRegister">
@@ -33,7 +36,7 @@
       </div>
       <div class="moreOpera">
         <div class="right">
-          已有账号，点击<b class="orange">登录</b>
+          已有账号，点击<b class="orange" @click="toLogin">登录</b>
         </div>
       </div>
     </div>
@@ -42,7 +45,7 @@
         <p>登录</p>
       </div>
       <div class="moreOpera">
-        <p class="left">新用户注册</p>
+        <p class="left" @click="toRegister">新用户注册</p>
         <p class="right">忘记密码</p>
       </div>
       <div class="agreePolicy">
@@ -55,6 +58,7 @@
 <script>
 import {register, login} from '@/api/admin'
 import {checkStr} from '@/utils/string'
+import {UserCode, CommonCode} from '@/utils/code'
 export default {
   props: {
     isRegister: {
@@ -66,14 +70,23 @@ export default {
     return {
       username: null,
       passWd: null,
-      passWdConfirm: null
+      passWdConfirm: null,
+      usernameExistedHint: false,
+      usernameNotExistHint: false,
+      incorrectParamHint: false
     }
   },
   methods: {
     handleRegister () {
       if (this.usernameHint === false && this.passWdHint === false && this.passWdConfirmHint === false) {
         register({username: this.username, passWd: this.passWd}).then(response => {
-          alert('注册成功')
+          let code = response.data.code
+          if (code === CommonCode.SUCCESS) {
+            alert('注册成功')
+            this.$router.push('/admin/login')
+          } else if (code === UserCode.USERNAME_ALREADY_EXISTS) {
+            this.usernameExistedHint = true
+          }
         }).catch(err => {
           alert(err)
         })
@@ -82,21 +95,34 @@ export default {
     handleLogin () {
       if (this.passWdHint === false && this.usernameHint === false) {
         login({username: this.username, passWd: this.passWd}).then(response => {
-          this.$store.commit('user/setUserSessionInfo', response.data.data)
-          alert('登陆成功')
-          this.$router.push('/home')
+          let code = response.data.code
+          if (code === CommonCode.SUCCESS) {
+            this.$store.commit('user/setUserSessionInfo', response.data.data)
+            alert('登陆成功')
+            this.$router.push('/home')
+          } else if (code === UserCode.INCORRECT_USERNAME_OR_PASSWORD) {
+            this.incorrectParamHint = true
+          } else if (code === UserCode.USERNAME_NOT_EXISTS) {
+            this.usernameNotExistHint = true
+          }
         }).catch(err => {
           alert(err)
         })
       }
+    },
+    toRegister () {
+      this.$router.push('/admin/register')
+    },
+    toLogin () {
+      this.$router.push('/admin/login')
     }
   },
   computed: {
     usernameHint () {
-      return !checkStr(this.username, len => len >= 6 && len <= 16, ch => ((ch >= 48 && ch <= 57) || (ch >= 65 && ch <= 90) || (ch >= 97 && ch <= 122) || ch === 95))
+      return this.isRegister && !checkStr(this.username, len => len >= 6 && len <= 16, ch => ((ch >= 48 && ch <= 57) || (ch >= 65 && ch <= 90) || (ch >= 97 && ch <= 122) || ch === 95))
     },
     passWdHint () {
-      return !checkStr(this.passWd, len => len >= 8 && len <= 18, ch => (ch >= 0x20 && ch <= 0x7f && ch !== 32))
+      return this.isRegister && !checkStr(this.passWd, len => len >= 8 && len <= 18, ch => (ch >= 0x20 && ch <= 0x7f && ch !== 32))
     },
     passWdConfirmHint () {
       return this.passWdConfirm !== this.passWd
@@ -177,7 +203,7 @@ export default {
       }
 
       .orange {
-        color:$quaternary-orange;
+        color: $quaternary-orange;
         font-weight: normal;
       }
     }
@@ -189,6 +215,28 @@ export default {
       strong {
         color: cornflowerblue;
         font-weight: lighter;
+      }
+    }
+
+    .registerSuccess {
+      @include div(80%, 120px, white);
+      position: absolute;
+      margin-top: -280px;
+      margin-left: 10%;
+      border: 1px solid $quaternary-orange;
+      box-shadow: $tertiary-orange 5px -3px 9px;
+      border-radius: 10px;
+
+      div {
+        @include fonts(18px, gray);
+        margin-top: 26px;
+      }
+
+      .toLogin {
+        @include fonts(19px, white);
+        @include div(30%, 30px, $quaternary-orange);
+        margin: 25px auto;
+        border-radius: 10px;
       }
     }
   }
