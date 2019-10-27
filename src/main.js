@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 import './styles/index.scss'
 import './assets/icon/iconfont.css'
+import './router/intercept'
 
 Vue.config.productionTip = false
 

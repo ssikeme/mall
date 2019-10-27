@@ -2,7 +2,7 @@ const userSessionInfo = {
   id: 1,
   username: 'qwe123',
   nickname: 'xtt',
-  avatar: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1570723081049&di=21c0db025807fc3663be49490c81fee4&imgtype=0&src=http%3A%2F%2Fc.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2F9922720e0cf3d7ca810f3732f81fbe096a63a9fd.jpg',
+  avatar: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1570726212465&di=cbde805871eaed7df7ec195065662fcd&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201512%2F20%2F20151220235323_3ZxEu.jpeg',
   isSeller: false
 }
 const proxy = {

@@ -1,15 +1,14 @@
 <template>
   <div class="main">
     <div class="head">
-      <img
-        src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1570726212465&di=cbde805871eaed7df7ec195065662fcd&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201512%2F20%2F20151220235323_3ZxEu.jpeg"
-        style="width: 100px;height: 100px">
+      <img :src="this.avatar"
+        style="width: 68px;height: 68px">
       <b class="username">xt_189165jlq</b>
       <div class="myConcern">
         <div class="myConcernNumber">
           <span class="goodsConcerned">{{this.userInfo.like_product_count}}</span>
-          <span class="storeConcerned">0</span>
-          <span class="myTrack ">0</span>
+          <span class="shopConcerned">{{this.userInfo.like_shop_count}}</span>
+          <span class="myTrack ">{{this.userInfo.browse_history_count}}</span>
         </div>
         <div class="myConcernName">
           <span>商品关注</span>
@@ -36,14 +35,18 @@
         <span class="unevaluated-order">待评价</span>
       </div>
     </div>
+    <navigate></navigate>
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
 import {getUserInfo} from '@/api/user'
-
+import navigate from '@/views/navigate/index'
 export default {
+  components: {
+    navigate
+  },
   data () {
     return {
       userInfo: {
@@ -57,7 +60,8 @@ export default {
         wait_receive_count: null,
         wait_rate_count: null
       },
-      id: null
+      id: null,
+      avatar: null
     }
   },
   computed: {
@@ -79,6 +83,8 @@ export default {
   },
   created () {
     this.id = this.userSessionInfo.id
+    this.avatar = this.userSessionInfo.avatar
+    alert(this.id)
     getUserInfo().then(response => {
       let {data} = response.data
       this.userInfo.like_product_count = data.like_product_count
@@ -100,48 +106,48 @@ export default {
   .main {
     background:white;
     .head {
-      height: 225px;
+      height: 155px;
       background: -webkit-linear-gradient($quaternary-orange, $tertiary-orange);
 
       img {
         border-radius: 100px;
-        margin-left: 16px;
-        margin-top: 16px;
+        margin-left: 14px;
+        margin-top: 14px;
       }
 
       b {
         position: absolute;
-        @include fonts(24px, white);
-        margin-top: 50px;
+        @include fonts(22px, white);
+        margin-top: 35px;
         margin-left: 16px;
       }
 
       .myConcern {
-        margin-top: 18px;
-        height: 90px;
+        margin-top: 5px;
+        height: 65px;
         span {
-          margin-top: 8px;
+          margin-top: 5px;
           float: left;
           width: 33%;
-          @include fonts(23px, white);
+          @include fonts(18px, white);
         }
         .myConcernName span{
           font-family: '幼圆',sans-serif;
-          font-size: 17px;
+          font-size: 15px;
         }
       }
     }
     .myAllOrders{
-      padding-top: 15px;
+      padding-top: 10px;
       height: 30px;
-      border-bottom:1px dashed black;
+      border-bottom:0.5px solid lightgray;
       .myOrders{
-        @include fonts(18px,$quaternary-orange);
+        @include fonts(16px,$quaternary-orange);
         margin-left: 10px;
       }
       .seeAllOrders{
         float: right;
-        @include fonts(15px,gray)
+        @include fonts(15px,gray);
       }
     }
     .orderCategoriesIcons{
@@ -156,10 +162,12 @@ export default {
           font-size: 24px;
           color: $quaternary-orange;
           .orderNum{
-            @include fonts(15px,$quaternary-orange,$weight:normal);
+            width: 8px;
+            height: 8px;
+            @include fonts(10px,$quaternary-orange,$weight:normal);
             vertical-align: top;
-            border: 2px solid $tertiary-orange;
-            border-radius: 12px;
+            border: 1px solid $tertiary-orange;
+            border-radius: 30px;
             background-color: white;
             padding:0 3px;
           }
@@ -172,7 +180,7 @@ export default {
       span{
         float:left;
         width: 25%;
-        @include fonts(15px,gray)
+        @include fonts(13px,gray);
       }
     }
   }

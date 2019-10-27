@@ -33,7 +33,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     before(app){//手动添加的
       apiMocker(app,[
         path.resolve('./src/mock/admin.js'),
-        path.resolve('./src/mock/user.js')
+        path.resolve('./src/mock/user.js'),
+        path.resolve('./src/mock/product.js')
       ])
     },
     hot: true,

@@ -11,7 +11,7 @@ const userInfo = {
 }
 
 const proxy = {
-  'GET /api/user/info/get':{
+  'GET /api/user/info/get': {
     code: 200,
     message: '成功',
     data: userInfo

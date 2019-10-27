@@ -1,11 +1,5 @@
 const state = {
-  userSessionInfo: {
-    id: null,
-    username: '',
-    nickname: '',
-    avatar: '',
-    isSeller: null
-  }
+  userSessionInfo: null
 }
 const mutations = {
   setUserSessionInfo: (state, userSessionInfo) => {

@@ -16,10 +16,11 @@ $font-family:'Avenir', Helvetica, Arial, sans-serif;
   background-color: $background-color;
   border-radius: $border-radius;
 }
-@mixin div($width:null,$height:null,$background-color:null,$float:null,$overflow:null){
+@mixin div($width:null,$height:null,$background-color:null,$float:null,$overflow:null,$border-radius:null){
   width: $width;
   height: $height;
   background-color: $background-color;
   float: $float;
   overflow: $overflow;
+  border-radius:$border-radius;
 }
